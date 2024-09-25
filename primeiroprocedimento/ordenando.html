@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ordenando</title>
+    <style>
+    body {
+    display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      font-family: Arial, sans-serif;
+    }
+    button{
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.25rem;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    input, select {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    </style>
+  </head>
+  <body>
+      <!-- b) Incluir a biblioteca ordenando.js em uma tag script
+
+    c) Definir um campo de entrada numérico, com o id valor
+
+    d) Adicionar um botão com texto Adicionar, efetuando a chamada para uma
+função de nome add no clique
+
+    e) Definir um campo de seleção com as opções Blubble Sort, Selection Sort
+e Quick Sort, com Bubble Sort selecionado por padrão
+
+    f) Adicionar um botão com o texto Ordenar, chamando a função ordenar
+
+    g) Adicionar um botão com o texto Misturar, chamando a função misturar
+
+    h) Definir uma lista (ul) com id valores, sem opções internas
+-->
+    <h1>Ordenando Valores</h1> 
+    <div>
+      <input type="number" id="valor">
+      <button onclick="add()">Adicionar</button>
+    </div>
+
+    <div>
+      <select id="algoritmo">
+        <option selected  value="bubble">Bubble Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="quick">Quick Sort</option>
+      </select>
+      <button onclick="ordenar()">Ordenar</button>
+    </div>
+    <button onclick="misturar()">Misturar</button>
+
+    <div>
+      <h2>vetor:</h2>
+      <ul id="valores"></ul>
+    </div>
+
+    <script src="./ordenando.js"></script>
+
+     <!-- i) Definir um trecho script, com as funções add, ordenar e misturar, todas
+no estilo clássico de escrita do Java Script e sem parâmetros  -->
+   <script>
+     
+/*
+    Implemente a função add, para adicionar o valor digitado no campo de
+    entrada à lista de valores, de acordo com os passos seguintes:
+
+    a) Capturar o campo de entrada com id valor via getElementById
+
+    b) Capturar a lista com id valores
+
+    c) Criar uma variável node, com um elemento li definido via createElement
+
+    d) Definir um nó de texto, com o valor do campo de entrada, e incluí-lo
+como filho de node
+
+    e) Adicionar o elemento node à lista valores
+*/
+
+  
+    function add() {
+      let valor = document.getElementById('valor').value;
+      let valores = document.getElementById('valores');
+      let node = document.createElement('li');
+      let textnode = document.createTextNode(valor);
+      node.appendChild(textnode);
+      valores.appendChild(node);
+    }
+
+    /* Implemente a função ordenar, para a ordenação da lista de valores, de
+    acordo com os passos apresentados a seguir:
+
+    a) Capturar a lista de valores e a lista de seleção via getElementById
+
+    b) Através do atributo children, obter cada nó da lista de valores e adicionar
+o conteúdo do item, convertido para inteiro, em um vetor
+
+    c) Os conteúdos podem ser obtidos via innerHTML e convertidos com eval
+
+    d) Escolher o algoritmo de ordenação adequado, a partir do selectedIndex
+da lista de seleção, e aplicar ao vetor
+
+    e) Utilizar os operadores map e reduce, do vetor, para gerar os novos itens
+da lista de valores, substituindo o conteúdo da lista via innerHTML */
+    function ordenar() {
+      let valores = document.getElementById('valores');
+      let algoritmo = document.getElementById('algoritmo');
+      let vetor = Array.from(valores.children).map(item => eval(item.innerHTML));
+      let ordenado = [];
+      switch (algoritmo.selectedIndex) {
+        case 0:
+          ordenado = bubbleSort(vetor);
+          break;
+        case 1:
+          ordenado = selectionSort(vetor);
+          break;
+        case 2:
+      ordenado = quickSort(vetor, 0, vetor.length - 1);
+          break;
+      }
+      valores.innerHTML = ordenado.map(item => `<li>${item}</li>`).reduce((a, b) => a + b);
+    }
+
+    /* Implemente a função misturar, para embaralhar os valores da lista, de
+    acordo com os passos apresentados a seguir:
+
+    a) Capturar a lista de valores via getElementById
+
+    b) Através do atributo children, obter cada nó da lista de valores e adicionar
+o conteúdo do item, convertido para inteiro, em um vetor
+
+    c) Os conteúdos podem ser obtidos via innerHTML e convertidos com eval
+
+    d) Aplicar a função shuffle ao vetor
+
+    e) Utilizar os operadores map e reduce, do vetor, para gerar os novos itens
+da lista de valores, substituindo o conteúdo da lista via innerHTML*/ 
+    function misturar() {
+      let valores = document.getElementById('valores');
+      let vetor = Array.from(valores.children).map(item => eval(item.innerHTML));
+      let embaralhado = shuffle(vetor, vetor.length);
+      valores.innerHTML = embaralhado.map(item => `<li>${item}</li>`).reduce((a, b) => a + b);
+    }
+
+
+
+// debug
+    // let array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// console.log(shuffle(array, array.length));
+    let randomNumbers =[7, 3, 5, 1, 9, 2, 4, 6, 8, 10];
+    console.log(quickSort(randomNumbers, 0, randomNumbers.length - 1));
+    </script>
+  </body>
+</html>
